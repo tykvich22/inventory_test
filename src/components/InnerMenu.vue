@@ -10,7 +10,6 @@ const store = useItemsStore();
 const setCurrentToNull = store.setCurrentToNull;
 const updateItemQuantity = store.updateItemQuantity;
 const removeItem = store.removeItem;
-const updateItemId = store.updateItemId;
 
 const newQuantity = ref<number>(props.currentItem?.quantity || 0);
 
@@ -77,18 +76,18 @@ const confirmRemove = () => {
 				<div
 					class="inner-menu-component-button inner-menu-component-button-secondary"
 				>
-					<Button @click="setCurrentToNull">Отмена</Button>
+					<button @click="setCurrentToNull">Отмена</button>
 				</div>
 				<div
 					class="inner-menu-component-button inner-menu-component-button-secondary"
 				>
-					<Button @click="confirmUpdate">Подтвердить</Button>
+					<button @click="confirmUpdate">Подтвердить</button>
 				</div>
 			</div>
 		</div>
 
 		<div class="inner-menu-component-button">
-			<Button @click="confirmRemove">Удалить предмет</Button>
+			<button @click="confirmRemove">Удалить предмет</button>
 		</div>
 	</div>
 </template>

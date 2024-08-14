@@ -22,8 +22,6 @@ export const useItemsStore = defineStore('items', () => {
 
 	const currentItem = ref<Item | null>(null);
 
-	console.log(items.value);
-
 	const getItem = (id: number) => {
 		return items.value.find((item) => item.id === id);
 	};
@@ -63,6 +61,7 @@ export const useItemsStore = defineStore('items', () => {
 		}
 
 		const item = getItem(currentId);
+		console.log(item);
 		if (item) {
 			item.id = newId;
 			if (currentItem.value?.id === currentId) {
