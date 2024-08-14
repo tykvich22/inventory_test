@@ -2,7 +2,7 @@
 
 <template>
 	<div class="avatar-card">
-		<div class="avatar-card-img"><img src="/public/images/nicebg.png" /></div>
+		<div class="avatar-card-img"><img src="/images/nicebg.png" /></div>
 		<div class="avatar-card-skeleton">
 			<div
 				class="avatar-card-skeleton-elements avatar-card-skeleton-1element"

@@ -1,11 +1,50 @@
 <script setup lang="ts">
 import InventoryItem from './InventoryItem.vue';
+import { defineProps, ref, watch } from 'vue';
+import { Item, useItemsStore } from '../stores/items';
+
+const props = defineProps<{ currentItem: Item | null }>();
+
+const store = useItemsStore();
+
+const setCurrentToNull = store.setCurrentToNull;
+const updateItemQuantity = store.updateItemQuantity;
+const removeItem = store.removeItem;
+const updateItemId = store.updateItemId;
+
+const newQuantity = ref<number>(props.currentItem?.quantity || 0);
+
+watch(
+	() => props.currentItem?.quantity,
+	(newVal) => {
+		if (newVal !== undefined) {
+			newQuantity.value = newVal;
+		}
+	}
+);
+
+const confirmUpdate = () => {
+	if (props.currentItem) {
+		updateItemQuantity(props.currentItem.id, newQuantity.value);
+	}
+	setCurrentToNull();
+};
+
+const confirmRemove = () => {
+	if (props.currentItem) {
+		removeItem(props.currentItem.id);
+	}
+	setCurrentToNull();
+};
 </script>
 
 <template>
 	<div class="inner-menu-component">
 		<div class="inner-menu-component-content">
-			<InventoryItem backgroundColor="green" widthAndHeight="116" />
+			<InventoryItem
+				:backgroundColor="currentItem?.color || '#fff'"
+				widthAndHeight="116"
+			/>
 		</div>
 		<div class="inner-menu-component-skeleton">
 			<div
@@ -32,23 +71,24 @@ import InventoryItem from './InventoryItem.vue';
 				type="number"
 				class="inner-menu-component-update-input"
 				placeholder="введите количество"
+				v-model="newQuantity"
 			/>
 			<div class="inner-menu-component-update-buttons">
 				<div
 					class="inner-menu-component-button inner-menu-component-button-secondary"
 				>
-					<Button>Отмена</Button>
+					<Button @click="setCurrentToNull">Отмена</Button>
 				</div>
 				<div
 					class="inner-menu-component-button inner-menu-component-button-secondary"
 				>
-					<Button>Подтвердить</Button>
+					<Button @click="confirmUpdate">Подтвердить</Button>
 				</div>
 			</div>
 		</div>
 
 		<div class="inner-menu-component-button">
-			<Button>Удалить предмет</Button>
+			<Button @click="confirmRemove">Удалить предмет</Button>
 		</div>
 	</div>
 </template>
@@ -82,7 +122,8 @@ import InventoryItem from './InventoryItem.vue';
 			width: 100%;
 
 			-webkit-appearance: none;
-			-moz-appearance: textfield;
+			-moz-appearance: none;
+			appearance: none;
 
 			&::-webkit-outer-spin-button,
 			&::-webkit-inner-spin-button {

@@ -1,15 +1,36 @@
 <script setup lang="ts">
 import InnerMenu from './InnerMenu.vue';
 import InventoryItem from './InventoryItem.vue';
+import { useItemsStore } from '../stores/items';
+import { storeToRefs } from 'pinia';
+
+const store = useItemsStore();
+const { currentItem } = storeToRefs(store);
+
+const getItem = store.getItem;
+const setCurrentItem = store.setCurrentItem;
 </script>
 
 <template>
 	<div class="inventory-container">
-		<InnerMenu />
+		<Transition name="slide-fade">
+			<template v-if="currentItem">
+				<InnerMenu :currentItem="currentItem" />
+			</template>
+		</Transition>
 		<div class="inventory-grid">
 			<div class="inventory-grid-cell" v-for="n in 25" :key="n">
-				<div class="inventory-grid-cell-count">4</div>
-				<InventoryItem backgroundColor="green" widthAndHeight="48" />
+				<template v-if="getItem(n)">
+					<div class="inventory-grid-cell-count">
+						{{ getItem(n)?.quantity }}
+					</div>
+					<InventoryItem
+						:backgroundColor="getItem(n)?.color || '#fff'"
+						widthAndHeight="48"
+						@click="setCurrentItem(n)"
+						:key="getItem(n)?.id"
+					/>
+				</template>
 			</div>
 		</div>
 	</div>
@@ -18,6 +39,27 @@ import InventoryItem from './InventoryItem.vue';
 <style scoped lang="scss">
 .inventory-container {
 	position: relative;
+}
+
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+	transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.slide-fade-enter-from {
+	transform: translateX(100%);
+	opacity: 0;
+}
+
+.slide-fade-enter-to,
+.slide-fade-leave-from {
+	transform: translateX(0);
+	opacity: 1;
+}
+
+.slide-fade-leave-to {
+	transform: translateX(100%);
+	opacity: 0;
 }
 
 .inventory-grid {
@@ -49,11 +91,12 @@ import InventoryItem from './InventoryItem.vue';
 			border-top: 1px solid #4d4d4d;
 			border-left: 1px solid #4d4d4d;
 			border-top-left-radius: 6px;
-			width: 16px;
+			min-width: 16px;
 			height: 16px;
 			position: absolute;
 			bottom: 0;
 			right: 0;
+			overflow: hidden;
 		}
 	}
 }

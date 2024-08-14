@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
 
-const props = defineProps({
+defineProps({
 	backgroundColor: {
 		type: String,
 		required: true,
@@ -37,6 +37,7 @@ const props = defineProps({
 
 <style scoped lang="scss">
 .container {
+	cursor: pointer;
 	margin-top: 7px;
 	margin-right: 7px;
 

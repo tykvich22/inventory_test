@@ -3,7 +3,7 @@
 <template>
 	<div class="bottom-component">
 		<div class="bottom-component-skeleton"></div>
-		<img class="bottom-component-image" src="/public/images/Vector.svg" />
+		<img class="bottom-component-image" src="/images/Vector.svg" />
 	</div>
 </template>
 
